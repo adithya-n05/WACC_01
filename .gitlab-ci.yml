@@ -1,0 +1,56 @@
+stages:
+  - compile
+  - unit-test
+  - integration-frontend
+  - integration-backend
+  - integration-extension
+
+variables:
+  SCALA_FLAGS: "--server=false --jvm system"
+
+compile:
+  stage: compile
+  script:
+    - echo "Compiling the project..."
+    - scala compile . $SCALA_FLAGS
+
+unit-test:
+  stage: unit-test
+  script:
+    - echo "Running unit tests..."
+    - scala test . --test-only 'wacc.unit*' $SCALA_FLAGS | tee unit_test_output.log
+  artifacts:
+    paths:
+      - unit_test_output.log
+    expire_in: 1 week
+
+integration-frontend:
+  stage: integration-frontend
+  script:
+    - echo "Running frontend integration tests..."
+    - scala test . --test-only 'wacc.integration.frontend*' $SCALA_FLAGS | tee integration_frontend_output.log
+  artifacts:
+    paths:
+      - integration_frontend_output.log
+      - "*.s"
+    expire_in: never
+
+integration-backend:
+  stage: integration-backend
+  script:
+    - echo "Running backend integration tests..."
+    - scala test . --test-only 'wacc.integration.backend*' $SCALA_FLAGS | tee integration_backend_output.log
+  artifacts:
+    paths:
+      - integration_backend_output.log
+    expire_in: never
+
+integration-extension:
+  stage: integration-extension
+  script:
+    - echo "Running extension integration tests..."
+    - scala test . --test-only 'wacc.integration.extension*' $SCALA_FLAGS | tee integration_extension_output.log
+  artifacts:
+    paths:
+      - integration_extension_output.log
+    expire_in: never

@@ -1,5 +1,3 @@
-This project is untouched and is exactly what we had done during university. This has been pushed and is meant for viewing only by PDT partners.
-
 This is the provided git repository for the WACC compilers lab. You should work
 in this repository regularly committing and pushing your work back to GitLab.
 
